@@ -1,163 +1,192 @@
 @extends('customer.layout.master')
 
+
 @section('content')
-        <div class="container-fluid py-5">
-            <div class="container py-5">
-                <div class="table-responsive">
-                    <table class="table">
-                        <thead>
-                          <tr>
-                            <th scope="col">Gambar</th>
-                            <th scope="col">Menu</th>
-                            <th scope="col">Harga</th>
-                            <th scope="col">Jumlah</th>
-                            <th scope="col">Total</th>
-                            <th scope="col">Aksi</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th scope="row">
-                                    <div class="d-flex align-items-center">
-                                        <img src="https://images.unsplash.com/photo-1591325418441-ff678baf78ef" class="img-fluid me-5 rounded-circle" style="width: 80px; height: 80px;" alt="">
-                                    </div>
-                                </th>
-                                <td>
-                                    <p class="mb-0 mt-4">Ichiraku Ramen</p>
-                                </td>
-                                <td>
-                                    <p class="mb-0 mt-4">Rp25.000,00</p>
-                                </td>
-                                <td>
-                                    <div class="input-group quantity mt-4" style="width: 100px;">
-                                        <div class="input-group-btn">
-                                            <button class="btn btn-sm btn-minus rounded-circle bg-light border" >
-                                            <i class="fa fa-minus"></i>
-                                            </button>
-                                        </div>
-                                        <input type="text" class="form-control form-control-sm text-center border-0" value="1">
-                                        <div class="input-group-btn">
-                                            <button class="btn btn-sm btn-plus rounded-circle bg-light border">
-                                                <i class="fa fa-plus"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <p class="mb-0 mt-4">Rp25.000,00</p>
-                                </td>
-                                <td>
-                                    <button class="btn btn-md rounded-circle bg-light border mt-4" >
-                                        <i class="fa fa-times text-danger"></i>
-                                    </button>
-                                </td>
+<div class="container-fluid page-header py-5">
+    <h1 class="text-center text-white display-6">Keranjang</h1>
+    <ol class="breadcrumb justify-content-center mb-0">
+        <li class="breadcrumb-item active text-primary">Silakan periksa pesanan anda</li>
+    </ol>
+</div>
+<div class="container-fluid py-5">
 
-                            </tr>
-                            <tr>
-                                <th scope="row">
-                                    <div class="d-flex align-items-center">
-                                        <img src="https://images.unsplash.com/photo-1543392765-620e968d2162?q=80&w=1987&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="img-fluid me-5 rounded-circle" style="width: 80px; height: 80px;" alt="" alt="">
-                                    </div>
-                                </th>
+    <div class="container py-5">
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+        @if (empty($cart))
+            <h4 class="text-center">Keranjang anda kosong</h4>
+        @else
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Gambar</th>
+                        <th>Menu</th>
+                        <th>Harga</th>
+                        <th>Jumlah</th>
+                        <th>Total</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @php
+                        $subtotal = 0;
+                    @endphp
+
+
+                        @foreach ($cart as $item)
+                            @php
+                                $itemTotal = $item['price'] * $item['qty'];
+                                $subtotal += $itemTotal;
+                            @endphp
+                            <tr class="align-middle">
                                 <td>
-                                    <p class="mb-0 mt-4">Beef Burger</p>
+                                    <img src="{{ $item['image'] }}" class="img-fluid rounded-circle" style="width: 80px; height: 80px;" alt="{{ $item['name'] }}" onerror="this.onerror=null;this.src='{{ $item['image'] }}';">
                                 </td>
-                                <td>
-                                    <p class="mb-0 mt-4">Rp40.000,00</p>
-                                </td>
+                                <td>{{ $item['name'] }}</td>
+                                <td>Rp{{ number_format($item['price'], 0, ',', '.') }}</td>
+                                {{-- <td>{{ $item['qty'] }}</td> --}}
                                 <td>
                                     <div class="input-group quantity mt-4" style="width: 100px;">
                                         <div class="input-group-btn">
-                                            <button class="btn btn-sm btn-minus rounded-circle bg-light border" >
-                                            <i class="fa fa-minus"></i>
+                                            <button class="btn btn-sm btn-minus rounded-circle bg-light border" onclick="updateQuantity({{ $item['id'] }}, -1)">
+                                                <i class="fa fa-minus"></i>
                                             </button>
                                         </div>
-                                        <input type="text" class="form-control form-control-sm text-center border-0" value="1">
+                                        <input type="text" class="form-control form-control-sm text-center border-0 bg-transparent" id="qty-{{ $item['id'] }}" value="{{ $item['qty'] }}" readonly>
                                         <div class="input-group-btn">
-                                            <button class="btn btn-sm btn-plus rounded-circle bg-light border">
+                                            <button class="btn btn-sm btn-plus rounded-circle bg-light border" onclick="updateQuantity({{ $item['id'] }}, 1)">
                                                 <i class="fa fa-plus"></i>
                                             </button>
                                         </div>
                                     </div>
                                 </td>
+                                <td>Rp{{ number_format($item['price'] * $item['qty'], 0, ',', '.') }}</td>
                                 <td>
-                                    <p class="mb-0 mt-4">Rp40.000,00</p>
-                                </td>
-                                <td>
-                                    <button class="btn btn-md rounded-circle bg-light border mt-4" >
-                                        <i class="fa fa-times text-danger"></i>
+                                    <button class="btn btn-sm btn-danger" onclick="if(confirm('Apakah Anda yakin ingin menghapus item ini?')) { removeItemFromCart({{ $item['id'] }}) }">
+                                        <i class="bi bi-trash-fill"></i>
                                     </button>
                                 </td>
                             </tr>
-                            <tr>
-                                <th scope="row">
-                                    <div class="d-flex align-items-center">
-                                        <img src="https://images.unsplash.com/photo-1579954115545-a95591f28bfc?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="img-fluid me-5 rounded-circle" style="width: 80px; height: 80px;" alt="" alt="">
-                                    </div>
-                                </th>
-                                <td>
-                                    <p class="mb-0 mt-4">Strawberry Smoothie</p>
-                                </td>
-                                <td>
-                                    <p class="mb-0 mt-4">Rp20.000,00</p>
-                                </td>
-                                <td>
-                                    <div class="input-group quantity mt-4" style="width: 100px;">
-                                        <div class="input-group-btn">
-                                            <button class="btn btn-sm btn-minus rounded-circle bg-light border" >
-                                            <i class="fa fa-minus"></i>
-                                            </button>
-                                        </div>
-                                        <input type="text" class="form-control form-control-sm text-center border-0" value="1">
-                                        <div class="input-group-btn">
-                                            <button class="btn btn-sm btn-plus rounded-circle bg-light border">
-                                                <i class="fa fa-plus"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <p class="mb-0 mt-4">Rp20.000,00</p>
-                                </td>
-                                <td>
-                                    <button class="btn btn-md rounded-circle bg-light border mt-4" >
-                                        <i class="fa fa-times text-danger"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                        @endforeach
+
+                </tbody>
+            </table>
+        </div>
+
+        @php
+            $tax = $subtotal * 0.1;
+            $total = $subtotal + $tax;
+        @endphp
+
+        <div class="d-flex justify-content-end">
+            <a href="{{ route('cart.clear') }}" class="btn btn-danger" onclick="return confirm('Apakah Anda yakin ingin mengosongkan keranjang?')">Kosongkan Keranjang</a>
+        </div>
+
+        <div class="row g-4 justify-content-end mt-1">
+            <div class="col-8"></div>
+            <div class="col-sm-8 col-md-7 col-lg-6 col-xl-4">
+                <div class="bg-light rounded">
+                    <div class="p-4">
+                        <h3 class="fw-bold mb-4">Total <span class="fw-normal">Pesanan</span></h3>
+                        <div class="d-flex justify-content-between mb-4">
+                            <h5 class="mb-0 me-4">Subtotal</h5>
+                            <p class="mb-0">Rp{{ number_format($subtotal, 0, ',', '.') }}</p>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <p class="mb-0 me-4">PPN (10%)</p>
+                            <div class="">
+                                <p class="mb-0">Rp{{ number_format($tax, 0, ',', '.') }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="py-4 mb-4 border-top d-flex justify-content-between">
+                        <h4 class="mb-0 ps-4 me-4">Total</h4>
+                        <h5 class="mb-0 pe-4">Rp{{ number_format($total, 0, ',', '.') }}</h5>
+                    </div>
                 </div>
-                <div class="row g-4 justify-content-end mt-1">
-                    <div class="col-8"></div>
-                    <div class="col-sm-8 col-md-7 col-lg-6 col-xl-4">
-                        <div class="bg-light rounded">
-                            <div class="p-4">
-                                <h2 class="display-6 mb-4">Total <span class="fw-normal">Pesanan</span></h2>
-                                <div class="d-flex justify-content-between mb-4">
-                                    <h5 class="mb-0 me-4">Subtotal</h5>
-                                    <p class="mb-0">Rp85.000,00</p>
-                                </div>
-                                <div class="d-flex justify-content-between">
-                                    <p class="mb-0 me-4">Pajak (10%)</p>
-                                    <div class="">
-                                        <p class="mb-0">Rp8.500,00</p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="py-4 mb-4 border-top d-flex justify-content-between">
-                                <h4 class="mb-0 ps-4 me-4">Total</h4>
-                                <h5 class="mb-0 pe-4">Rp93.500,00</h5>
-                            </div>
-
-                        </div>
-                        <div class="d-flex justify-content-end">
-                            <div class="mb-0 mb-3">
-                                <a href="{{ route('checkout') }}" class="btn border-secondary py-3 text-primary text-uppercase mb-4" type="button">Lanjut ke Pembayaran</a>
-                            </div>
-                        </div>
+                <div class="d-flex justify-content-end">
+                    <div class="mb-0">
+                        <a href="{{ route('checkout') }}" class="btn border-secondary py-3 text-primary text-uppercase mb-4" type="button">Lanjut ke Pembayaran</a>
                     </div>
                 </div>
             </div>
         </div>
+        @endif
+    </div>
+</div>
+@endsection
+
+@section('script')
+<script>
+    function updateQuantity(itemId, change) {
+        var qtyInput = document.getElementById('qty-' + itemId);
+        var currentQty = parseInt(qtyInput.value);
+        var newQty = currentQty + change;
+
+        if (newQty < 1) {
+            if(confirm("Apakah Anda yakin ingin menghapus item ini?")) {
+                removeItemFromCart(itemId);
+            }
+            return;
+        }
+
+        fetch("{{ route('cart.update') }}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({
+                id: itemId,
+                qty: newQty
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                qtyInput.value = newQty;
+                location.reload();
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Terjadi kesalahan saat memperbarui jumlah item.');
+        });
+
+    }
+
+    function removeItemFromCart(itemId) {
+        fetch("{{ route('cart.remove') }}", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+            body: JSON.stringify({
+                id: itemId
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert(data.message);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Terjadi kesalahan saat menghapus item dari keranjang.');
+        })
+    }
+</script>
+
+
 @endsection

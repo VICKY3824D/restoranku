@@ -12,31 +12,43 @@ class ItemFactory extends Factory
             // Makanan (category_id = 1)
             [
                 'name' => fake()->randomElement([
-                    'Pepperoni Pizza',
-                    'Margherita Pizza',
-                    'Chicken Kebab',
-                    'Beef Kebab',
-                    'Cheeseburger',
-                    'Chicken Burger',
-                    'Caesar Salad',
-                    'Greek Salad'
+                    'Nasi Goreng Special',
+                    'Mie Goreng Jawa',
+                    'Sate Ayam Madura',
+                    'Sate Kambing',
+                    'Rendang Daging',
+                    'Ayam Bakar Bumbu Rujak',
+                    'Gado-gado',
+                    'Soto Ayam',
+                    'Bakso Urat',
+                    'Pempek Kapal Selam',
+                    'Nasi Padang',
+                    'Lontong Sayur',
+                    'Rawon Daging',
+                    'Sop Buntut',
+                    'Tahu Tek',
+                    'Ketoprak'
                 ]),
                 'img' => fake()->randomElement([
-                    // Pizza
-                    'https://images.unsplash.com/photo-1513104890138-7c749659a591',
-                    'https://images.unsplash.com/photo-1571066811602-716837d681de',
+                    // Nasi Goreng/Mie Goreng
+                    'https://images.unsplash.com/photo-1585032226651-759b368d7246',
+                    'https://images.unsplash.com/photo-1551504734-5ee1c4a1479b',
 
-                    // Kebab
-                    'https://images.unsplash.com/photo-1601050690597-df0568f70950',
-                    'https://images.unsplash.com/photo-1631898034273-8a9d1f6dc9e1',
+                    // Sate
+                    'https://images.unsplash.com/photo-1551504734-5ee1c4a1479b',
+                    'https://images.unsplash.com/photo-1563245372-f21724e3856d',
 
-                    // Burger
-                    'https://images.unsplash.com/photo-1568901346375-23c9450c58cd',
-                    'https://images.unsplash.com/photo-1571091718767-18b5b1457add',
+                    // Rendang/Ayam
+                    'https://images.unsplash.com/photo-1563245372-f21724e3856d',
+                    'https://images.unsplash.com/photo-1585032226651-759b368d7246',
 
-                    // Salad
-                    'https://images.unsplash.com/photo-1546793665-c74683f339c1',
-                    'https://images.unsplash.com/photo-1512621776951-a57141f2eefd'
+                    // Gado-gado/Soto
+                    'https://images.unsplash.com/photo-1551504734-5ee1c4a1479b',
+                    'https://images.unsplash.com/photo-1563245372-f21724e3856d',
+
+                    // Bakso/Pempek
+                    'https://images.unsplash.com/photo-1585032226651-759b368d7246',
+                    'https://images.unsplash.com/photo-1551504734-5ee1c4a1479b'
                 ]),
                 'category_id' => 1
             ],
@@ -44,23 +56,37 @@ class ItemFactory extends Factory
             // Minuman (category_id = 2)
             [
                 'name' => fake()->randomElement([
-                    'Cola Soda',
-                    'Lemon Soda',
-                    'Orange Juice',
-                    'Iced Tea',
-                    'Mineral Water',
-                    'Coffee Latte'
+                    'Es Teh Manis',
+                    'Es Jeruk',
+                    'Es Kelapa Muda',
+                    'Es Campur',
+                    'Es Dawet',
+                    'Wedang Jahe',
+                    'Bajigur',
+                    'Bandrek',
+                    'Es Cendol',
+                    'Es Teler',
+                    'Kopi Tubruk',
+                    'Teh Tarik',
+                    'Es Kopi Susu',
+                    'Bir Pletok'
                 ]),
                 'img' => fake()->randomElement([
-                    // Soda/Jus
-                    'https://images.unsplash.com/photo-1554866585-cd94860890b7',
-                    'https://images.unsplash.com/photo-1625772452859-1c03d5bf1137',
-
-                    // Minuman lainnya
-                    'https://images.unsplash.com/photo-1437419764061-2473afe69fc2',
+                    // Es Teh/Jeruk
                     'https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9',
+                    'https://images.unsplash.com/photo-1437419764061-2473afe69fc2',
+
+                    // Es Kelapa/Cendol
                     'https://images.unsplash.com/photo-1558160074-4d7d8bdf4256',
-                    'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5'
+                    'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5',
+
+                    // Minuman Hangat
+                    'https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5',
+                    'https://images.unsplash.com/photo-1558160074-4d7d8bdf4256',
+
+                    // Kopi/Teh
+                    'https://images.unsplash.com/photo-1564890369478-c89ca6d9cde9',
+                    'https://images.unsplash.com/photo-1437419764061-2473afe69fc2'
                 ]),
                 'category_id' => 2
             ]
@@ -71,10 +97,48 @@ class ItemFactory extends Factory
         return [
             'name' => $selectedCategory['name'],
             'category_id' => $selectedCategory['category_id'],
-            'price' => fake()->randomFloat(2, 1000, 10000),
-            'description' => fake()->text(),
+            'price' => fake()->randomFloat(2, 5000, 50000), // Adjusted price range for Indonesian food
+            'description' => $this->generateIndonesianDescription($selectedCategory['name']),
             'img' => $selectedCategory['img'],
-            'is_active' => fake()->boolean(),
+            'is_active' => fake()->boolean(90), // 90% chance of being active
         ];
+    }
+
+    protected function generateIndonesianDescription(string $foodName): string
+    {
+        $descriptions = [
+            'Nasi Goreng Special' => 'Nasi goreng spesial dengan campuran ayam, udang, dan sayuran, disajikan dengan telur mata sapi dan kerupuk',
+            'Mie Goreng Jawa' => 'Mie goreng khas Jawa dengan bumbu rempah yang kaya, ditambah sayuran dan telur',
+            'Sate Ayam Madura' => 'Sate ayam khas Madura dengan bumbu kacang yang kental dan legit',
+            'Sate Kambing' => 'Sate daging kambing muda yang empuk dengan bumbu kecap dan rempah',
+            'Rendang Daging' => 'Daging sapi dimasak perlahan dengan bumbu rempah khas Minang sampai empuk dan meresap',
+            'Ayam Bakar Bumbu Rujak' => 'Ayam bakar dengan bumbu rujak yang pedas manis khas Jawa',
+            'Gado-gado' => 'Salad sayuran khas Indonesia dengan saus kacang yang gurih',
+            'Soto Ayam' => 'Sup ayam dengan kuah kuning yang harum rempah, disajikan dengan nasi atau lontong',
+            'Bakso Urat' => 'Bakso daging dengan tekstur kenyal berisi urat sapi yang gurih',
+            'Pempek Kapal Selam' => 'Pempek Palembang berisi telur ayam dengan kuah cuko yang asam manis',
+            'Nasi Padang' => 'Nasi putih dengan berbagai lauk pilihan khas Minangkabau',
+            'Lontong Sayur' => 'Lontong dengan sayur labu siam dalam kuah santan yang gurih',
+            'Rawon Daging' => 'Sup daging dengan kuah hitam dari keluwek khas Jawa Timur',
+            'Sop Buntut' => 'Sup buntut sapi dengan kuah bening yang gurih',
+            'Tahu Tek' => 'Tahu dan lontong dengan saus kacang, telur, dan sayuran khas Surabaya',
+            'Ketoprak' => 'Makanan khas Jakarta terdiri dari tahu, bihun, dan sayuran dengan saus kacang',
+            'Es Teh Manis' => 'Es teh dengan gula yang menyegarkan',
+            'Es Jeruk' => 'Es jeruk segar dengan potongan buah jeruk',
+            'Es Kelapa Muda' => 'Es dari air kelapa muda asli dengan daging kelapa',
+            'Es Campur' => 'Campuran berbagai buah dan jelly dengan sirup dan susu',
+            'Es Dawet' => 'Minuman khas Jawa dengan cendol, santan, dan gula merah',
+            'Wedang Jahe' => 'Minuman jahe hangat dengan gula aren yang menghangatkan badan',
+            'Bajigur' => 'Minuman hangat khas Sunda dari gula aren dan santan',
+            'Bandrek' => 'Minuman rempah hangat khas Jawa Barat',
+            'Es Cendol' => 'Minuman tradisional dengan cendol, santan, dan gula merah',
+            'Es Teler' => 'Es campur dengan alpukat, kelapa, nangka, dan susu',
+            'Kopi Tubruk' => 'Kopi khas Indonesia diseduh langsung dengan bubuk kopi',
+            'Teh Tarik' => 'Teh susu khas Melayu yang ditarik untuk menghasilkan busa',
+            'Es Kopi Susu' => 'Campuran kopi kuat dengan susu dan es batu',
+            'Bir Pletok' => 'Minuman tradisional Betawi yang menyegarkan tanpa alkohol'
+        ];
+
+        return $descriptions[$foodName] ?? 'Makanan/minuman khas Indonesia yang lezat dan autentik';
     }
 }
