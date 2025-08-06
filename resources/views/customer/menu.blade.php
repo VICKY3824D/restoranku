@@ -14,6 +14,8 @@
                 <div class="row g-3">
                     <div class="col-lg">
                         <div class="row g-4 justify-content-center">
+
+                            {{-- $items from controller (database) --}}
                             @foreach($items as $item)
                             <div class="col-md-6 col-lg-6 col-xl-4">
                                 <div class="rounded position-relative fruite-item">

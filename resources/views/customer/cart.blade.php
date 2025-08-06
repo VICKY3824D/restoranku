@@ -1,6 +1,5 @@
 @extends('customer.layout.master')
 
-
 @section('content')
 <div class="container-fluid page-header py-5">
     <h1 class="text-center text-white display-6">Keranjang</h1>
@@ -37,7 +36,7 @@
                         $subtotal = 0;
                     @endphp
 
-
+                        {{-- $cart from controller (session) --}}
                         @foreach ($cart as $item)
                             @php
                                 $itemTotal = $item['price'] * $item['qty'];

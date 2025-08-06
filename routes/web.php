@@ -20,7 +20,6 @@ Route::group([
                 Route::post('/remove', 'removeCart')->name('remove');
                 Route::post('/update', 'updateCart')->name('update');
                 Route::get('/clear', 'clearCart')->name('clear');
-
 });
 
 

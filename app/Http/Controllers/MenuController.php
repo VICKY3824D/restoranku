@@ -45,18 +45,22 @@ class MenuController extends Controller
 
         $cart = Session::get('cart', []);
 
-        if(isset($cart[$menuId])){
-            $cart[$menuId]['qty']++;
+        $currCart = $cart[$menuId] ?? null; // safe: will be null if not yet available
+
+        if ($currCart) {
+            $currCart['qty']++;
         } else {
-            $cart[$menuId] = [
+            $currCart = [
                 'id' => $menu->id,
                 'name' => $menu->name,
                 'price' => $menu->price,
-                'image' => $menu->img, // Changed 'img' to 'image' to match cart view
+                'image' => $menu->img,
                 'qty' => 1
             ];
         }
 
+        // save $currCart back into $cart
+        $cart[$menuId] = $currCart;
         Session::put('cart', $cart);
 
         return response()->json([
