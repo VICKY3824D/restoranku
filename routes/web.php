@@ -24,6 +24,7 @@ Route::group([
 });
 
 
+
 Route::group([
     'controller' => CheckoutController::class,
     'prefix' => 'checkout',
@@ -33,8 +34,8 @@ Route::group([
     Route::get('/', 'checkout');
     Route::post('/store', 'storeOrder')
         ->name('store');
+    Route::get('/success/{orderCode}/', 'orderSuccess')
+        ->name('success');
 
 });
-
-
 
