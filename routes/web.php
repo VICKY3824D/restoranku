@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MenuController;
+use \App\Http\Controllers\CheckoutController;
 
 Route::get('/', function () {
     return;
@@ -23,8 +24,17 @@ Route::group([
 });
 
 
-Route::get('/checkout', function () {
-    return view('customer.checkout');
-})->name('checkout');
+Route::group([
+    'controller' => CheckoutController::class,
+    'prefix' => 'checkout',
+    'as' => 'checkout.'
+], function () {
+
+    Route::get('/', 'checkout');
+    Route::post('/store', 'storeOrder')
+        ->name('store');
+
+});
+
 
 

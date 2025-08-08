@@ -16,6 +16,16 @@
                         <div class="d-flex m-3 me-0">
                             <a href="{{ route('cart.') }}" class="position-relative me-4 my-auto">
                                 <i class="fa fa-shopping-bag fa-2x"></i>
+                                @php
+                                    $cart = session('cart');
+                                    $cartCount = is_array($cart) ? count($cart) : 0;
+                                @endphp
+                                @if($cartCount > 0)
+                                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                        {{ $cartCount }}
+                                        <span class="visually-hidden">items in cart</span>
+                                    </span>
+                                @endif
                             </a>
                         </div>
                     </div>

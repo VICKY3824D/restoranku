@@ -76,10 +76,12 @@
         })
         .then(data => {
             console.log('Success response:', data); // Debug log
-            alert(data.message); // ✅ Perbaikan: gunakan data.message bukan data.success
+            alert(data.message); //
 
-            // Optional: Refresh page atau update cart counter
-            // location.reload();
+            // if data exists, redirect to cart page
+            {{--window.location.href = "{{ route('cart.') }}";--}}
+
+            window.location.href = "{{ route('menu') }}";
         })
         .catch(error => {
             console.error("Error:", error);

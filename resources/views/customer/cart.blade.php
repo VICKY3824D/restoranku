@@ -17,7 +17,12 @@
             </div>
         @endif
         @if (empty($cart))
-            <h4 class="text-center">Keranjang anda kosong</h4>
+                <h4 class="text-center">Keranjang anda kosong</h4>
+                <div class="text-center">
+                    <a href="{{ route('menu') }}" class="btn border border-secondary rounded-pill px-3 text-primary">
+                        <i class="fa fa-shopping-bag me-2 text-primary"></i> Pesan Sekarang
+                    </a>
+                </div>
         @else
         <div class="table-responsive">
             <table class="table">
@@ -110,7 +115,7 @@
                 </div>
                 <div class="d-flex justify-content-end">
                     <div class="mb-0">
-                        <a href="{{ route('checkout') }}" class="btn border-secondary py-3 text-primary text-uppercase mb-4" type="button">Lanjut ke Pembayaran</a>
+                        <a href="{{ route('checkout.') }}" class="btn border-secondary py-3 text-primary text-uppercase mb-4" type="button">Lanjut ke Pembayaran</a>
                     </div>
                 </div>
             </div>
