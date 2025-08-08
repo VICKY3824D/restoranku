@@ -59,7 +59,7 @@ class CheckoutController extends Controller
 
             $itemDetails[] = [
                 'id' => $item['id'],
-                'price' => $price + ($price * 0.1),
+                'price' => (int) ($price + ($price * 0.1)),
                 'quantity' => $item['qty'],
                 'name' => substr($item['name'], 0, 50),
             ];
