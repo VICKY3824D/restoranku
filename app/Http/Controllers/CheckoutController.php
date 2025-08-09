@@ -100,8 +100,41 @@ class CheckoutController extends Controller
 
         Session::forget('cart');
 
-        return redirect()->route('checkout.success', ['orderCode' => $order->order_code])
-            ->with('success', 'Pesanan berhasil dibuat');
+         if ($validated_data['payment_method'] == 'cash'){
+
+             return redirect()->route('checkout.success', ['orderCode' => $order->order_code])
+                ->with('success', 'Pesanan berhasil dibuat');
+         } else {
+            \Midtrans\Config::$serverKey = config('midtrans.server_key'); // Set Midtrans server key (API key)
+            \Midtrans\Config::$isProduction = config('midtrans.is_production'); // true = Production mode, false = Sandbox mode
+            \Midtrans\Config::$isSanitized = true; // Enable auto-sanitization of sensitive data
+            \Midtrans\Config::$is3ds = true; // Enable 3D Secure for credit card payments
+
+             $params = [
+                 'transaction_details' => [
+                     'order_id' => $order->order_code,
+                     'gross_amount' => (int) $order->grand_total,
+                 ],
+                 'item_details' => $itemDetails,
+                 'customer_details' => [
+                     'first_name' => $user->fullname ?? 'Guest',
+                     'phone' => $user->phone,
+                 ],
+             ];
+
+             try {
+                 $snapToken = \Midtrans\Snap::getSnapToken($params);
+
+                 return response()->json([
+                     'status' => 'success',
+                     'snap_token' => $snapToken,
+                     'order_code' => $order->order_code,
+                 ]);
+             } catch (\Exception $e) {
+                 return redirect()->route('checkout.')
+                        ->with('error', 'Gagal membuat pembayaran');
+             }
+         }
     }
 
     public function  orderSuccess($orderCode)

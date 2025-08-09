@@ -157,7 +157,7 @@
                                     </div>
 
                                     <div class="d-flex justify-content-end">
-                                        <button type="submit" class="btn border-secondary py-3 text-uppercase text-primary">Konfirmasi Pesanan</button>
+                                        <button id="pay-button" type="button" class="btn border-secondary py-3 text-uppercase text-primary">Konfirmasi Pesanan</button>
                                     </div>
 
                                 </div>
@@ -167,4 +167,68 @@
                 </form>
             </div>
         </div>
+
+{{--  MIDTRANS  --}}
+
+{{-- Production: https://app.midtrans.com/snap/snap.js --}}
+{{-- Sandbox: https://app.sandbox.midtrans.com/snap/snap.js --}}
+<script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ env('MIDTRANS_CLIENT_KEY') }}"></script>
+
+<script >
+    document.addEventListener("DOMContentLoaded", function () {
+        const payButton = document.getElementById('pay-button');
+        const form = document.querySelector('form');
+
+        payButton.addEventListener('click', function() {
+
+            // Get payment method from radio button
+            let paymentMethod = document.querySelector('input[name="payment_method"]:checked');
+
+            if(!paymentMethod) {
+                alert('Silakan pilih metode pembayaran');
+                return;
+            }
+
+            paymentMethod = paymentMethod.value;
+            let formData = new FormData(form);
+
+            if(paymentMethod === 'cash'){
+                form.submit();
+            } else {
+                fetch('{{ route('checkout.store') }}', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.snap_token){
+                        console.log(`Snap Token nya : ${data.snap_token}`);
+                        snap.pay(data.snap_token, {
+                            onSuccess: function (result) {
+                                window.location.href = '/checkout/success/' + data.order_code;
+                            },
+                            onPending: function (result) {
+                                alert('Menunggu pembayaran');
+                            },
+                            onError: function (result) {
+                                alert('Pembayaran gagal');
+                            },
+                        });
+                    } else {
+                        alert('Terjadi kesalahan, silahkan coba lagi');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Terjadi kesalahan, silahkan coba lagi');
+                });
+            }
+
+        })
+    })
+</script>
+
 @endsection
