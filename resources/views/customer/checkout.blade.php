@@ -204,6 +204,7 @@
                 })
                 .then(response => response.json())
                 .then(data => {
+                    console.log('Data:', data);
                     if (data.snap_token){
                         console.log(`Snap Token nya : ${data.snap_token}`);
                         snap.pay(data.snap_token, {
