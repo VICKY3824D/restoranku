@@ -26,6 +26,12 @@
     <section class="section">
         <div class="card">
             <div class="card-body">
+                @if(session('success'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <p></p><i class="bi bi-check-circle-fill"></i> {{ session('success') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
                 <table class="table table-striped" id="table1">
                     <thead>
                         <tr>
@@ -44,7 +50,7 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>
-                                    <img src="{{ asset('img_item_upload/'. $item->img) }}" width="60" class="img-fluid rounded-top" alt="" onerror="this.onerror=null;this.src='{{ $item->img }}';">
+                                    <img src="{{ asset('img_item_upload/'. $item->img) }}" style="width: 65px; height: 65px;" class="img-fluid rounded-2" alt="" onerror="this.onerror=null;this.src='{{ $item->img }}';">
                                 </td>
                                 <td>{{ $item->name }}</td>
                                 <td>{{ \Illuminate\Support\Str::limit($item->description, 15)  }}</td>

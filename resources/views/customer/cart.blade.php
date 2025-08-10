@@ -49,7 +49,10 @@
                             @endphp
                             <tr class="align-middle">
                                 <td>
-                                    <img src="{{ $item['image'] }}" class="img-fluid rounded-circle" style="width: 80px; height: 80px;" alt="{{ $item['name'] }}" onerror="this.onerror=null;this.src='{{ $item['image'] }}';">
+                                    <img src="{{ asset('img_item_upload/' . $item['image']) }}"
+                                         class="img-fluid rounded-circle" style="width: 80px; height: 80px;"
+                                         alt="{{ $item['name'] }}"
+                                         onerror="this.onerror=null;this.src='{{ $item['image'] }}';">
                                 </td>
                                 <td>{{ $item['name'] }}</td>
                                 <td>Rp{{ number_format($item['price'], 0, ',', '.') }}</td>

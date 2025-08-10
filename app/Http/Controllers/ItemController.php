@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ItemAdminRequest;
 use App\Models\Category;
 use App\Models\Item;
 use Illuminate\Http\Request;
@@ -32,9 +33,20 @@ class ItemController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ItemAdminRequest $request)
     {
-        //
+        $validated_data = $request->validated();
+
+        if ($request->hasFile('img')) {
+            $image = $request->file('img');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('img_item_upload/'), $imageName);
+            $validated_data['img'] = $imageName;
+        }
+
+        $item = Item::create($validated_data);
+
+        return redirect()->route('admin.items.index')->with('success', 'Item created successfully');
     }
 
     /**
@@ -50,15 +62,31 @@ class ItemController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $item = Item::findOrFail($id);
+        $categories = Category::orderBy('cat_name', 'asc')->get();
+
+        return view('admin.item.edit', compact('item', 'categories'));
+
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(ItemAdminRequest $request, string $id)
     {
-        //
+        $validated_data = $request->validated();
+
+        if ($request->hasFile('img')) {
+            $image = $request->file('img');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('img_item_upload/'), $imageName);
+            $validated_data['img'] = $imageName;
+        }
+
+        $item = Item::findOrFail($id);
+        $item->update($validated_data);
+
+        return redirect()->route('admin.items.index')->with('success', 'Item updated successfully');
     }
 
     /**
@@ -66,6 +94,19 @@ class ItemController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $item = Item::findOrFail($id);
+
+        // delete image first from public folder
+        if ($item->img) {
+            $imagePath = public_path('img_item_upload/' . $item->img);
+            if (file_exists($imagePath)) {
+                unlink($imagePath);
+            }
+        }
+
+        // then delete the item
+        $item->delete();
+
+        return redirect()->route('admin.items.index')->with('success', 'Item deleted successfully');
     }
 }

@@ -93,7 +93,10 @@
                                             <tr>
                                                 <th scope="row">
                                                     <div class="d-flex align-items-center mt-2">
-                                                        <img src="{{ $item['image'] }}" class="img-fluid rounded-circle" style="width: 80px; height: 80px;" alt="{{ $item['name'] }}" onerror="this.onerror=null;this.src='{{ $item['image'] }}';">
+                                                        <img src="{{ asset('img_item_upload/' . $item['image']) }}"
+                                                             class="img-fluid rounded-circle" style="width: 80px; height: 80px;"
+                                                             alt="{{ $item['name'] }}"
+                                                             onerror="this.onerror=null;this.src='{{ $item['image'] }}';">
                                                     </div>
                                                 </th>
                                                 <td class="py-5">{{ $item['name'] }}</td>
