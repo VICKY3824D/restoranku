@@ -46,7 +46,9 @@ class ItemController extends Controller
 
         $item = Item::create($validated_data);
 
-        return redirect()->route('admin.items.index')->with('success', 'Item created successfully');
+        $message = 'Item ' . $item->name . ' berhasil ditambahkan';
+
+        return redirect()->route('admin.items.index')->with('success', $message);
     }
 
     /**
@@ -86,7 +88,9 @@ class ItemController extends Controller
         $item = Item::findOrFail($id);
         $item->update($validated_data);
 
-        return redirect()->route('admin.items.index')->with('success', 'Item updated successfully');
+        $message = 'Item ' . $item->name . ' berhasil diubah';
+
+        return redirect()->route('admin.items.index')->with('success', $message);
     }
 
     /**
@@ -107,6 +111,8 @@ class ItemController extends Controller
         // then delete the item
         $item->delete();
 
-        return redirect()->route('admin.items.index')->with('success', 'Item deleted successfully');
+        $message = 'Item ' . $item->name . ' berhasil dihapus';
+
+        return redirect()->route('admin.items.index')->with('success', $message);
     }
 }
