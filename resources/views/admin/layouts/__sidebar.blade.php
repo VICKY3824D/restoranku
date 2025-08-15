@@ -52,7 +52,7 @@
                         <li class="sidebar-item {{ request()->routeIs('admin.orders.*') ? 'active' : '' }}">
                             <a href="{{ route('admin.orders.index') }}" class='sidebar-link'>
                                 <i class="bi bi-cart-fill"></i>
-                                <span>Kelola Pesanan</span>
+                                <span>Daftar Pesanan</span>
                             </a>
                         </li>
 
