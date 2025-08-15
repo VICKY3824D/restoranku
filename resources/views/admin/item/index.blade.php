@@ -61,7 +61,7 @@
                                     </span>
                                 </td>
                                 <td>
-                                    <span class="badge {{ $item->is_active == 1 ? 'bg-success' : 'bg-amber-800' }}">
+                                    <span class="badge {{ $item->is_active == 1 ? 'bg-success' : 'text-danger' }}">
                                         {{ $item->is_active == 1 ? 'Tersedia' : 'Kosong' }}
                                     </span>
                                 </td>
