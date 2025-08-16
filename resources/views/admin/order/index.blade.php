@@ -75,7 +75,7 @@
                                 <td>{{ $order->created_at->format('d-m-Y H:i') }}</td>
                                 <td>
                                     <span class="badge bg-primary">
-                                        <a href="{{ route('admin.orders.edit', $order->id) }}" class="text-white">
+                                        <a href="{{ route('admin.orders.show', $order->id) }}" class="text-white">
                                             <i class="bi bi-eye"></i> Lihat
                                         </a>
                                     </span>
