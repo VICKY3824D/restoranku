@@ -41,10 +41,13 @@
                             <th>Total</th>
                             <th>Status</th>
                             <th>No. Meja</th>
-                            <th>Metode Pembayaran</th>
+                            <th>Pembayaran</th>
                             <th>Catatan</th>
                             <th>Dibuat Pada</th>
                             <th>Aksi</th>
+                            @if(Auth::user()->role->role_name != 'Admin')
+                                <th>Konfirmasi</th>
+                            @endif    
                         </tr>
                     </thead>
                     <tbody>
@@ -74,12 +77,12 @@
                                 <td>{{ \Illuminate\Support\Str::limit($order->notes ?? '-', 20) }}</td>
                                 <td>{{ $order->created_at->format('d-m-Y H:i') }}</td>
                                 <td>
-                                    <span class="badge bg-primary mb-1">
+                                    <span class="btn btn-sm btn-primary">
                                         <a href="{{ route('admin.orders.show', $order->id) }}" class="text-white">
                                             <i class="bi bi-eye"></i> Lihat
                                         </a>
                                     </span>
-
+                                <td>
                                     {{-- Confirm cash payment for Admin and cashier --}}
                                     @if(Auth::user()->role->role_name == 'cashier')
                                         @if($order->status == 'pending' && $order->payment_method == 'cash')
@@ -90,6 +93,14 @@
                                                     <i class="bi bi-check-circle"></i> Terima Pembayaran
                                                 </button>
                                             </form>
+                                        @else
+                                            <form action="" method="POST">
+                                                @csrf
+                                                <button type="submit" class="btn btn-sm btn-light-secondary border-0"
+                                                        disabled>
+                                                    <i class="bi bi-file-excel"></i> Terima Pembayaran
+                                                </button>
+                                            </form>
                                         @endif
                                     @elseif(Auth::user()->role->role_name == 'chef')
                                         @if($order->status == 'settlement')
@@ -98,6 +109,13 @@
                                                 @csrf
                                                 <button type="submit" class="btn btn-sm btn-success">
                                                     <i class="bi bi-check-circle"></i> Dibuat
+                                                </button>
+                                            </form>
+                                        @else
+                                            <form action="" method="POST">
+                                                @csrf
+                                                <button type="submit" class="btn btn-sm btn-light-secondary border-0" disabled>
+                                                    <i class="bi bi-file-excel"></i> Dibuat
                                                 </button>
                                             </form>
                                         @endif

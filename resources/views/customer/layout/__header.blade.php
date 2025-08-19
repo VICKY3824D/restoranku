@@ -27,4 +27,6 @@
 
         <!-- Template Stylesheet -->
         <link href="{{ asset('assets/customer/css/style.css') }}" rel="stylesheet">
+
+        <link rel="icon" href="https://img.pikbest.com/png-images/20241030/culinary-restaurant-logo-design_11027332.png!sw800">
     </head>

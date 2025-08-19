@@ -58,31 +58,35 @@
 
                         <li class="sidebar-item {{ request()->routeIs('admin.items.*') ? 'active' : '' }}">
                             <a href="{{ route('admin.items.index') }}" class='sidebar-link'>
-                            <i class="bi bi-card-list"></i>
+                            <i class="bi bi-menu-down"></i>
                                 <span>Daftar Menu</span>
                             </a>
                         </li>
 
-                        <li class="sidebar-item {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
-                            <a href="{{ route('admin.users.index') }}" class='sidebar-link'>
-                            <i class="bi bi-person-fill"></i>
-                                <span>Manajemen Karyawan</span>
-                            </a>
-                        </li>
+                        @if (auth()->user()->role->role_name == 'Admin')
 
-                        <li class="sidebar-item {{ request()->routeIs('admin.roles.*') ? 'active' : '' }}">
-                            <a href="{{ route('admin.roles.index') }}" class='sidebar-link'>
-                            <i class="bi bi-person-fill"></i>
-                                <span>Manajemen Role</span>
-                            </a>
-                        </li>
+                            <li class="sidebar-item {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
+                                <a href="{{ route('admin.users.index') }}" class='sidebar-link'>
+                                    <i class="bi bi-people-fill"></i>
+                                    <span>Manajemen Karyawan</span>
+                                </a>
+                            </li>
 
-                        <li class="sidebar-item {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
-                            <a href="{{ route('admin.categories.index') }}" class='sidebar-link'>
-                            <i class="bi bi-person-fill"></i>
-                                <span>Manajemen Kategori</span>
-                            </a>
-                        </li>
+                            <li class="sidebar-item {{ request()->routeIs('admin.roles.*') ? 'active' : '' }}">
+                                <a href="{{ route('admin.roles.index') }}" class='sidebar-link'>
+                                    <i class="bi bi-person-fill-gear"></i>
+                                    <span>Manajemen Role</span>
+                                </a>
+                            </li>
+
+                            <li class="sidebar-item {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
+                                <a href="{{ route('admin.categories.index') }}" class='sidebar-link'>
+                                    <i class="bi bi-bookmarks-fill"></i>
+                                    <span>Manajemen Kategori</span>
+                                </a>
+                            </li>
+
+                        @endif
 
                         <li class="sidebar-item">
                             <form   action="{{ route('logout') }}" method="POST"

@@ -64,14 +64,12 @@ Route::middleware('role:Admin')->group(function () {
     Route::resource('categories', CategoryController::class)->names('admin.categories');
     Route::resource('roles', RoleController::class)->names('admin.roles');
     Route::resource('users', UserController::class)->names('admin.users');
-    Route::resource('items', ItemController::class)->names('admin.items');
 });
 
 Route::middleware( \App\Http\Middleware\RoleMiddleware::class . ':Admin|cashier|chef')->group(function () {
 
-    Route::get('/dashboard', function () {
-        return view('admin.dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])
+        ->name('dashboard');
 
     Route::resource('orders', OrderController::class)->names('admin.orders');
 
@@ -86,6 +84,10 @@ Route::middleware('role:chef')->group(function () {
     Route::post('order/cooked/{order}', [OrderController::class, 'cooked'])
     ->name('orders.cooked');
 
+});
+
+Route::middleware('role:Admin|chef')->group(function () {
+    Route::resource('items', ItemController::class)->names('admin.items');
 });
 
 require __DIR__.'/auth.php';
