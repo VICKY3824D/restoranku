@@ -54,19 +54,19 @@ Route::group([
 });
 
 // admin routes
-Route::middleware('role:Admin|cashier')->group(function () {
+Route::middleware('role:cashier|admin')->group(function () {
     Route::post('orders/settlement/{order}', [OrderController::class, 'settlement'])
         ->name('orders.settlement');
 });
 
 // only admin can modify categories, roles, users, and items
-Route::middleware('role:Admin')->group(function () {
+Route::middleware('role:admin')->group(function () {
     Route::resource('categories', CategoryController::class)->names('admin.categories');
     Route::resource('roles', RoleController::class)->names('admin.roles');
     Route::resource('users', UserController::class)->names('admin.users');
 });
 
-Route::middleware( \App\Http\Middleware\RoleMiddleware::class . ':Admin|cashier|chef')->group(function () {
+Route::middleware( \App\Http\Middleware\RoleMiddleware::class . ':cashier|chef|admin')->group(function () {
 
     Route::get('/dashboard', [\App\Http\Controllers\DashboardController::class, 'index'])
         ->name('dashboard');
@@ -79,14 +79,14 @@ Route::middleware( \App\Http\Middleware\RoleMiddleware::class . ':Admin|cashier|
 });
 
 // only chef can process order
-Route::middleware('role:chef')->group(function () {
+Route::middleware('role:chef|admin')->group(function () {
 
     Route::post('order/cooked/{order}', [OrderController::class, 'cooked'])
     ->name('orders.cooked');
 
 });
 
-Route::middleware('role:Admin|chef')->group(function () {
+Route::middleware('role:chef|admin')->group(function () {
     Route::resource('items', ItemController::class)->names('admin.items');
 });
 

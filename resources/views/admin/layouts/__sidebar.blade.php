@@ -63,7 +63,7 @@
                             </a>
                         </li>
 
-                        @if (auth()->user()->role->role_name == 'Admin')
+                        @if (auth()->user()->role->role_name == 'admin')
 
                             <li class="sidebar-item {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
                                 <a href="{{ route('admin.users.index') }}" class='sidebar-link'>
@@ -72,12 +72,12 @@
                                 </a>
                             </li>
 
-                            <li class="sidebar-item {{ request()->routeIs('admin.roles.*') ? 'active' : '' }}">
-                                <a href="{{ route('admin.roles.index') }}" class='sidebar-link'>
-                                    <i class="bi bi-person-fill-gear"></i>
-                                    <span>Manajemen Role</span>
-                                </a>
-                            </li>
+{{--                            <li class="sidebar-item {{ request()->routeIs('admin.roles.*') ? 'active' : '' }}">--}}
+{{--                                <a href="{{ route('admin.roles.index') }}" class='sidebar-link'>--}}
+{{--                                    <i class="bi bi-person-fill-gear"></i>--}}
+{{--                                    <span>Manajemen Role</span>--}}
+{{--                                </a>--}}
+{{--                            </li>--}}
 
                             <li class="sidebar-item {{ request()->routeIs('admin.categories.*') ? 'active' : '' }}">
                                 <a href="{{ route('admin.categories.index') }}" class='sidebar-link'>

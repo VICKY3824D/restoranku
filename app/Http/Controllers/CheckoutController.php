@@ -100,6 +100,7 @@ class CheckoutController extends Controller
 
         Session::forget('cart');
 
+        // Midtrans Integration
          if ($validated_data['payment_method'] == 'cash'){
 
              return redirect()->route('checkout.success', ['orderCode' => $order->order_code])
